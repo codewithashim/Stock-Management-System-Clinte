@@ -1,78 +1,137 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import LoginImg from "../../Assects/login.svg";
+import { AuthContext } from "../../Context/UserContext";
+import useToken from "../../Hooks/useToken";
 
 const Login = () => {
-  const { register, handleSubmit, errors } = useForm();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [loginUserEmail, setLoginUserEmail] = useState("");
+  const [token] = useToken(loginUserEmail);
+  const { signIn } = useContext(AuthContext);
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const from = location?.state?.from?.pathname || "/";
+
+  if (token) {
+    navigate(from, { replace: true });
+  }
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm();
+
+  const hendelLogin = (data) => {
+    signIn(data.email, data.password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(user);
+        setLoginUserEmail(data.email);
+
+        Swal.fire(
+          "Succesfuly Login Done !",
+          "You clicked the button!",
+          "success"
+        );
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+        // ..
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      });
   };
 
   return (
-    <section>
-      <div className="hero min-h-screen bg-base-200">
-        <div className="hero-content">
-          <div className="text-center lg:text-left">
-            <h1 className="text-5xl font-bold">Login now!</h1>
-            <img src={LoginImg} alt="login" />
-          </div>
-          <div className="card flex-shrink-0 w-full shadow-2xl bg-base-100">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="card-body">
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Email</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="email"
-                    className="input input-bordered"
-                    {...register("email", { required: true })}
-                  />
-                  {errors.email && (
-                    <span className="text-red-500 text-xs italic">
-                      {" "}
-                      Email Fild is required
-                    </span>
-                  )}
-                </div>
-                <div className="form-control">
-                  <label className="label">
-                    <span className="label-text">Password</span>
-                  </label>
-                  <input
-                    type="password"
-                    placeholder="password"
-                    name="password"
-                    {...register("password", { required: true })}
-                    className="input input-bordered"
-                  />
-                  {errors.password && (
-                    <span className="text-red-500 text-xs italic">
-                      Password is required
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <span className="text-2xl">
-                    Are you new user? <Link to="/register">Register</Link>
-                  </span>
-                </div>
-                <div className="form-control mt-3">
-                  <button className="btn btn-primary btn-sm" type="submit">
-                    Login
-                  </button>
-                </div>
+    <>
+      <section className="p-6">
+        <div className="hero min-h-screen ">
+          <div className="hero-content grid md:grid-cols-2 gap-4">
+            <div className="text-center lg:text-left">
+              <div>
+                <img
+                  src={LoginImg}
+                  alt="login"
+                  style={{
+                    width: "80%",
+                  }}
+                />
               </div>
-            </form>
+            </div>
+            <div className="card flex-shrink-0 w-2/3  shadow-2xl bg-base-100">
+              <form onSubmit={handleSubmit(hendelLogin)}>
+                <div className="card-body">
+                  <div>
+                    <h1 className="text-5xl font-bold text-center mb-2">
+                      Login now!
+                    </h1>
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Email</span>
+                    </label>
+                    <input
+                      {...register("email", { required: true })}
+                      type="email"
+                      placeholder="email"
+                      className="input input-bordered"
+                    />
+                    {errors.email?.type === "required" && (
+                      <p role="alert" className="text-red-600 mt-1">
+                        Email filde is required
+                      </p>
+                    )}
+                  </div>
+                  <div className="form-control">
+                    <label className="label">
+                      <span className="label-text">Password</span>
+                    </label>
+                    <input
+                      {...register("password", { required: true })}
+                      type="password"
+                      placeholder="password"
+                      className="input input-bordered"
+                    />
+                    {errors.password?.type === "required" && (
+                      <p role="alert" className="text-red-600 mt-1">
+                        Password filde is required
+                      </p>
+                    )}
+                    <label className="label">
+                      <Link className="label-text-alt link link-hover text-primary">
+                        Forgot password?
+                      </Link>
+                    </label>
+                  </div>
+                  <div>
+                    <h3>
+                      Don't have an account?{" "}
+                      <Link
+                        to="/register"
+                        className="link link-hover text-primary"
+                      >
+                        Register
+                      </Link>
+                    </h3>
+                  </div>
+                  <div className="form-control mt-3">
+                    <button className="btn btn-primary">Login</button>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

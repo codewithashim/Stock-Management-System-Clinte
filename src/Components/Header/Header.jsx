@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../Assects/logo.png";
+import Swal from "sweetalert2";
 import {
   FaPowerOff,
   FaUserAlt,
@@ -10,7 +11,19 @@ import {
 import { AuthContext } from "../../Context/UserContext";
 
 const Header = () => {
-  const { user } = useContext(AuthContext);
+  const { user, logOut } = useContext(AuthContext);
+  const hendelLogout = () => {
+    logOut()
+      .then(() => {
+        Swal.fire("Sucessfully Logout !", "You clicked the button!", "success");
+        localStorage.removeItem("accesToken");
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        console.log(errorMessage);
+        Swal.fire("OPPs Somthing Warn!", "You clicked the button!", "error");
+      });
+  };
   const menuList = (
     <>
       <li>
@@ -18,6 +31,14 @@ const Header = () => {
       </li>
       <li>
         <Link>About Us</Link>
+      </li>
+      <li>
+        {user?.email && (
+          <Link className="flex gap-2 justify-center items-center">
+            <FaUserCircle></FaUserCircle>
+            Dashboard
+          </Link>
+        )}
       </li>
     </>
   );
@@ -69,7 +90,15 @@ const Header = () => {
               <div className="dropdown dropdown-end">
                 <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
                   <div className="w-10 rounded-full">
-                    <img src="https://placeimg.com/80/80/people" alt="Name" />
+                    {user?.photoURL ? (
+                      <>
+                        <img src={user?.photoURL} alt="Name" />
+                      </>
+                    ) : (
+                      <>
+                        <FaUserCircle></FaUserCircle>
+                      </>
+                    )}
                   </div>
                 </label>
                 <ul
@@ -90,7 +119,7 @@ const Header = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link onClick={() => hendelLogout()}>
                       <FaPowerOff></FaPowerOff>
                       Logout
                     </Link>

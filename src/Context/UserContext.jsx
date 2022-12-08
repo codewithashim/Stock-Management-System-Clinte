@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import app from "../Firebase/Firebase.config";
 
@@ -18,21 +19,25 @@ const UserContext = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   // Sign Up
-  const signUp = async (email, password) => {
+  const signUp = (email, password) => {
     setLoading(true);
-    return await createUserWithEmailAndPassword(auth, email, password);
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
+
+  const updateUserDetails = (userInfo) => {
+    return updateProfile(auth.currentUser, userInfo);
   };
 
   // Sign In
-  const signIn = async (email, password) => {
+  const signIn = (email, password) => {
     setLoading(true);
-    return await signInWithEmailAndPassword(auth, email, password);
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   // Sign Out
-  const logOut = async () => {
+  const logOut = () => {
     setLoading(true);
-    return await signOut(auth);
+    return signOut(auth);
   };
 
   // watch user state change
@@ -55,6 +60,7 @@ const UserContext = ({ children }) => {
     setError,
     error,
     loading,
+    updateUserDetails,
     user,
   };
   return (
