@@ -27,15 +27,18 @@ const Header = () => {
   const menuList = (
     <>
       <li>
-        <Link>Home</Link>
+        <Link to="/home">Home</Link>
       </li>
       <li>
         <Link>About Us</Link>
       </li>
       <li>
         {user?.email && (
-          <Link className="flex gap-2 justify-center items-center">
-            <FaUserCircle></FaUserCircle>
+          <Link
+            to="/dashboard"
+            className="flex gap-2 justify-center items-center"
+          >
+            <FaChartPie></FaChartPie>
             Dashboard
           </Link>
         )}
@@ -84,6 +87,25 @@ const Header = () => {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">{menuList}</ul>
         </div>
+        <div>
+          <label htmlFor="my-drawer-2" className="drawer-button lg:hidden">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M4 6h16M4 12h8m-8 6h16"
+              />
+            </svg>
+          </label>
+        </div>
+
         <div className="navbar-end">
           {user?.email ? (
             <>
@@ -92,7 +114,7 @@ const Header = () => {
                   <div className="w-10 rounded-full">
                     {user?.photoURL ? (
                       <>
-                        <img src={user?.photoURL} alt="Name" />
+                        <img src={user?.photoURL} alt={user.displayName} />
                       </>
                     ) : (
                       <>
@@ -106,14 +128,14 @@ const Header = () => {
                   className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
                 >
                   <li>
-                    <Link>
+                    <Link to="/dashboard/profile">
                       <FaUserAlt></FaUserAlt>
                       Profile
                       <span className="badge">New</span>
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/dashboard">
                       <FaChartPie></FaChartPie>
                       Dashboard
                     </Link>
