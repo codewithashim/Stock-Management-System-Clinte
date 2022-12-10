@@ -27,10 +27,7 @@ const Header = () => {
   const menuList = (
     <>
       <li>
-        <Link to="/home">Home</Link>
-      </li>
-      <li>
-        <Link>About Us</Link>
+        <Link to="/">Home</Link>
       </li>
       <li>
         {user?.email && (
