@@ -43,7 +43,7 @@ const Return = () => {
   return (
     <section>
       <div>
-        <h1 className="text-2xl font-bold">Lend Stocks</h1>
+        <h1 className="text-2xl font-bold">Lend Return</h1>
         <div className="divider"></div>
       </div>
 
@@ -153,7 +153,7 @@ const Return = () => {
             type="submit"
             onClick={hendelSubmit}
           >
-            Lend
+            Return
           </button>
         </div>
       </div>
