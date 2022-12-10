@@ -11,7 +11,7 @@ import {
   FaRegCheckSquare,
 } from "react-icons/fa";
 import { Link, Outlet } from "react-router-dom";
-import { Swal } from "sweetalert2/dist/sweetalert2";
+import Swal from "sweetalert2";
 import Header from "../Components/Header/Header";
 import { AuthContext } from "../Context/UserContext";
 // import useAdmin from "../Hooks/useAdmin";
@@ -62,19 +62,19 @@ const DashboardLayout = () => {
                   className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
                 >
                   <li>
-                    <Link>
+                    <Link to="/dashboard/purchase">
                       <FaCartPlus></FaCartPlus>
                       Purchased
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/dashboard/borrowed">
                       <FaCartPlus></FaCartPlus>
                       Borrowed
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/dashboard/returned">
                       <FaCartPlus></FaCartPlus>
                       Returned Product
                     </Link>
@@ -97,19 +97,19 @@ const DashboardLayout = () => {
                   className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
                 >
                   <li>
-                    <Link>
+                    <Link to="/dashboard/sold">
                       <FaArrowAltCircleUp></FaArrowAltCircleUp>
                       Stock Sold
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/dashboard/lend">
                       <FaArrowAltCircleUp></FaArrowAltCircleUp>
                       Stock Lend
                     </Link>
                   </li>
                   <li>
-                    <Link>
+                    <Link to="/dashboard/return">
                       <FaArrowAltCircleUp></FaArrowAltCircleUp>
                       Stock Return
                     </Link>

@@ -1,11 +1,14 @@
-import React from 'react';
+import React from "react";
 
 const Returned = () => {
-    return (
-        <div>
-            comming soon
-        </div>
-    );
+  return (
+    <section className="p-4">
+      <div>
+        <h1 className="text-2xl font-bold">Returned Stocks</h1>
+        <div className="divider"></div>
+      </div>
+    </section>
+  );
 };
 
 export default Returned;
