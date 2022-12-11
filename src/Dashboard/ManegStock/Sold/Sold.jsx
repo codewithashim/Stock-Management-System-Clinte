@@ -34,9 +34,6 @@ const Sold = () => {
   const hendelSubmit = (event) => {
     event.preventDefault();
 
-    // const soldStock = Object.assign({}, sold);
-    // console.log(soldStock);
-
     fetch("http://localhost:8000/soldStock", {
       method: "POST",
       headers: {

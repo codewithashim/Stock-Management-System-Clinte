@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Lend = () => {
   const lendFromTamplet = {
@@ -8,6 +9,7 @@ const Lend = () => {
     mrp: "",
     costPrice: "",
     lendDate: "",
+    status: "lend",
   };
   const [lend, setLend] = useState([lendFromTamplet]);
 
@@ -31,9 +33,27 @@ const Lend = () => {
 
   const hendelSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+
+    fetch("http://localhost:8000/lendStock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ lend }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        Swal.fire("Succesfuly Lend !", "You clicked the button!", "success");
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      });
   };
 
   return (

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Return = () => {
   const lendFromTamplet = {
@@ -8,6 +9,7 @@ const Return = () => {
     mrp: "",
     costPrice: "",
     returnDate: "",
+    status: "return",
   };
   const [returnProduct, setReturnProduct] = useState([lendFromTamplet]);
 
@@ -35,9 +37,31 @@ const Return = () => {
 
   const hendelSubmit = (event) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-    console.log(data);
+
+    fetch("http://localhost:8000/returnStock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ returnProduct }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        Swal.fire(
+          "Succesfuly Return Product !",
+          "You clicked the button!",
+          "success"
+        );
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
+        });
+      });
   };
 
   return (
